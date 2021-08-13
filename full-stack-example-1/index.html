@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My First Full-stack JavaScript App</title>
+</head>
+<body>
+	<h1>My App</h1>
+	<p>Here are some names:</p>
+	<ul id="names-container"></ul>
+
+	<script>
+		fetch('http://localhost:8080/names')
+			.then(response => response.json())
+			.then(names => {
+				for (let name of names) {
+					let nameElement = document.createElement('li');
+					nameElement.innerText = name;
+					document.querySelector('#names-container').appendChild(nameElement);
+				}
+			});
+	</script>
+</body>
+</html>

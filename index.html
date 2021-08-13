@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My First Full-stack JavaScript App</title>
+</head>
+<body>
+	<h1>My Todos</h1>
+	<input id="new-todo-text" placeholder="New todo text" />
+	<button onclick="createNewTodo()">Create new todo</button>
+	<div id="todos-container"></div>
+
+	<script>
+		function createNewTodo() {
+			fetch('http://localhost:8080/todos', {
+				method: 'POST',
+				body: JSON.stringify({ text: document.getElementById('new-todo-text').value }),
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			})
+				.then(response => response.json())
+				.then(todos => {
+					document.querySelector('#todos-container').innerHTML = '';
+
+					for (let todo of todos) {
+						let todoElement = document.createElement('h3');
+						if (todo.isCompleted) {
+							todoElement.innerText = todo.text + ' - Completed!';
+						} else {
+							todoElement.innerText = todo.text;
+						}
+						document.querySelector('#todos-container').appendChild(todoElement);
+					}
+				});
+		}
+
+		fetch('http://localhost:8080/todos')
+			.then(response => response.json())
+			.then(todos => {
+				for (let todo of todos) {
+					let todoElement = document.createElement('h3');
+					if (todo.isCompleted) {
+						todoElement.innerText = todo.text + ' - Completed!';
+					} else {
+						todoElement.innerText = todo.text;
+					}
+					document.querySelector('#todos-container').appendChild(todoElement);
+				}
+			});
+	</script>
+</body>
+</html>
